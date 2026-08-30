@@ -24,11 +24,39 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
             dropout_prob=dropout,
         )
     elif architecture == "resnet18":
-        model = resnet18(
-            spatial_dims=3,
-            n_input_channels=in_channels,
-            num_classes=out_channels,
-        )
+        if bool(config["model"].get("medicalnet_pretrained", False)):
+            # MedicalNet was trained with one input channel and no classification head.
+            # MONAI downloads and strictly validates the official 23-dataset checkpoint.
+            model = resnet18(
+                pretrained=True,
+                spatial_dims=3,
+                n_input_channels=1,
+                feed_forward=False,
+                shortcut_type="A",
+                bias_downsample=True,
+            )
+            if in_channels != 1:
+                original = model.conv1
+                replacement = torch.nn.Conv3d(
+                    in_channels,
+                    original.out_channels,
+                    kernel_size=original.kernel_size,
+                    stride=original.stride,
+                    padding=original.padding,
+                    dilation=original.dilation,
+                    groups=original.groups,
+                    bias=False,
+                )
+                with torch.no_grad():
+                    replacement.weight.copy_(original.weight.repeat(1, in_channels, 1, 1, 1) / in_channels)
+                model.conv1 = replacement
+            model.fc = torch.nn.Linear(model.in_planes, out_channels)
+        else:
+            model = resnet18(
+                spatial_dims=3,
+                n_input_channels=in_channels,
+                num_classes=out_channels,
+            )
     else:
         raise ValueError(f"Unsupported model architecture: {architecture}")
 

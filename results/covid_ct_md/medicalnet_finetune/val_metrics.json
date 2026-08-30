@@ -1,0 +1,601 @@
+{
+  "task_type": "single_label",
+  "samples": 46,
+  "patients": 46,
+  "accuracy": 0.5434782608695652,
+  "macro": {
+    "auroc": 0.5995691069220481,
+    "auprc": 0.4967737537088279,
+    "sensitivity": 0.3333333333333333,
+    "specificity": 0.6666666666666666,
+    "precision": 0.18115942028985507,
+    "f1": 0.23474178403755866,
+    "brier": 0.19586465093356908
+  },
+  "classes": [
+    {
+      "class": "normal",
+      "threshold": 0.5,
+      "support_positive": 12,
+      "support_negative": 34,
+      "auroc": 0.49754901960784315,
+      "auprc": 0.27552657101141087,
+      "sensitivity": 0.0,
+      "specificity": 1.0,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.1963326681659551,
+      "tn": 34,
+      "fp": 0,
+      "fn": 12,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": [
+          0.3207678329952671,
+          0.6913369663369661
+        ],
+        "auprc": [
+          0.16812004426614405,
+          0.5072015650149049
+        ],
+        "sensitivity": [
+          0.0,
+          0.0
+        ],
+        "specificity": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "cap",
+      "threshold": 0.5,
+      "support_positive": 9,
+      "support_negative": 37,
+      "auroc": 0.7297297297297297,
+      "auprc": 0.5970617216994029,
+      "sensitivity": 0.0,
+      "specificity": 1.0,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.15035864542259111,
+      "tn": 37,
+      "fp": 0,
+      "fn": 9,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": [
+          0.48500000000000004,
+          0.9351041666666665
+        ],
+        "auprc": [
+          0.3076597067786092,
+          0.8710416666666665
+        ],
+        "sensitivity": [
+          0.0,
+          0.0
+        ],
+        "specificity": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "covid19",
+      "threshold": 0.5,
+      "support_positive": 25,
+      "support_negative": 21,
+      "auroc": 0.5714285714285714,
+      "auprc": 0.6177329684156702,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "precision": 0.5434782608695652,
+      "f1": 0.704225352112676,
+      "brier": 0.240902639212161,
+      "tn": 0,
+      "fp": 21,
+      "fn": 0,
+      "tp": 25,
+      "confidence_intervals": {
+        "auroc": [
+          0.39149372464503046,
+          0.7581946532999165
+        ],
+        "auprc": [
+          0.43303981992537305,
+          0.8231724488333846
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ],
+  "bootstrap": {
+    "iterations": 500,
+    "confidence_level": 0.95,
+    "sampling_unit": "patient"
+  },
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      12
+    ],
+    [
+      0,
+      0,
+      9
+    ],
+    [
+      0,
+      0,
+      25
+    ]
+  ],
+  "temperature": 0.8266717791557312,
+  "subgroups": {
+    "sex": {
+      "F": {
+        "task_type": "single_label",
+        "samples": 19,
+        "patients": 19,
+        "accuracy": 0.47368421052631576,
+        "macro": {
+          "auroc": 0.661965811965812,
+          "auprc": 0.5762089085919496,
+          "sensitivity": 0.3333333333333333,
+          "specificity": 0.6666666666666666,
+          "precision": 0.15789473684210525,
+          "f1": 0.2142857142857143,
+          "brier": 0.20767639790034334
+        },
+        "classes": [
+          {
+            "class": "normal",
+            "threshold": 0.5,
+            "support_positive": 6,
+            "support_negative": 13,
+            "auroc": 0.4358974358974359,
+            "auprc": 0.3209188472346367,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.2274124596154912,
+            "tn": 13,
+            "fp": 0,
+            "fn": 6,
+            "tp": 0
+          },
+          {
+            "class": "cap",
+            "threshold": 0.5,
+            "support_positive": 4,
+            "support_negative": 15,
+            "auroc": 0.9166666666666667,
+            "auprc": 0.7928571428571428,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.15234298797132773,
+            "tn": 15,
+            "fp": 0,
+            "fn": 4,
+            "tp": 0
+          },
+          {
+            "class": "covid19",
+            "threshold": 0.5,
+            "support_positive": 9,
+            "support_negative": 10,
+            "auroc": 0.6333333333333333,
+            "auprc": 0.6148507356840691,
+            "sensitivity": 1.0,
+            "specificity": 0.0,
+            "precision": 0.47368421052631576,
+            "f1": 0.6428571428571429,
+            "brier": 0.24327374611421118,
+            "tn": 0,
+            "fp": 10,
+            "fn": 0,
+            "tp": 9
+          }
+        ],
+        "bootstrap": {
+          "iterations": 0,
+          "confidence_level": 0.95,
+          "sampling_unit": "patient"
+        },
+        "confusion_matrix": [
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            9
+          ]
+        ]
+      },
+      "M": {
+        "task_type": "single_label",
+        "samples": 27,
+        "patients": 27,
+        "accuracy": 0.5925925925925926,
+        "macro": {
+          "auroc": 0.5189454064454064,
+          "auprc": 0.43402669367312435,
+          "sensitivity": 0.3333333333333333,
+          "specificity": 0.6666666666666666,
+          "precision": 0.19753086419753085,
+          "f1": 0.24806201550387597,
+          "brier": 0.1875526808458391
+        },
+        "classes": [
+          {
+            "class": "normal",
+            "threshold": 0.5,
+            "support_positive": 6,
+            "support_negative": 21,
+            "auroc": 0.4920634920634921,
+            "auprc": 0.23863728863728864,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.17446170381257792,
+            "tn": 21,
+            "fp": 0,
+            "fn": 6,
+            "tp": 0
+          },
+          {
+            "class": "cap",
+            "threshold": 0.5,
+            "support_positive": 5,
+            "support_negative": 22,
+            "auroc": 0.5818181818181818,
+            "auprc": 0.43157349896480335,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.14896225622162831,
+            "tn": 22,
+            "fp": 0,
+            "fn": 5,
+            "tp": 0
+          },
+          {
+            "class": "covid19",
+            "threshold": 0.5,
+            "support_positive": 16,
+            "support_negative": 11,
+            "auroc": 0.4829545454545454,
+            "auprc": 0.631869293417281,
+            "sensitivity": 1.0,
+            "specificity": 0.0,
+            "precision": 0.5925925925925926,
+            "f1": 0.7441860465116279,
+            "brier": 0.239234082503311,
+            "tn": 0,
+            "fp": 11,
+            "fn": 0,
+            "tp": 16
+          }
+        ],
+        "bootstrap": {
+          "iterations": 0,
+          "confidence_level": 0.95,
+          "sampling_unit": "patient"
+        },
+        "confusion_matrix": [
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            16
+          ]
+        ]
+      }
+    },
+    "age_group": {
+      "40_to_59": {
+        "task_type": "single_label",
+        "samples": 24,
+        "patients": 24,
+        "accuracy": 0.625,
+        "macro": {
+          "auroc": 0.559787199480182,
+          "auprc": 0.4709452504266746,
+          "sensitivity": 0.3333333333333333,
+          "specificity": 0.6666666666666666,
+          "precision": 0.20833333333333334,
+          "f1": 0.25641025641025644,
+          "brier": 0.17933288563140715
+        },
+        "classes": [
+          {
+            "class": "normal",
+            "threshold": 0.5,
+            "support_positive": 5,
+            "support_negative": 19,
+            "auroc": 0.4631578947368421,
+            "auprc": 0.24418414918414919,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.16691224434092355,
+            "tn": 19,
+            "fp": 0,
+            "fn": 5,
+            "tp": 0
+          },
+          {
+            "class": "cap",
+            "threshold": 0.5,
+            "support_positive": 4,
+            "support_negative": 20,
+            "auroc": 0.7124999999999999,
+            "auprc": 0.55,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.13595999859988683,
+            "tn": 20,
+            "fp": 0,
+            "fn": 4,
+            "tp": 0
+          },
+          {
+            "class": "covid19",
+            "threshold": 0.5,
+            "support_positive": 15,
+            "support_negative": 9,
+            "auroc": 0.5037037037037038,
+            "auprc": 0.6186516020958746,
+            "sensitivity": 1.0,
+            "specificity": 0.0,
+            "precision": 0.625,
+            "f1": 0.7692307692307693,
+            "brier": 0.23512641395341105,
+            "tn": 0,
+            "fp": 9,
+            "fn": 0,
+            "tp": 15
+          }
+        ],
+        "bootstrap": {
+          "iterations": 0,
+          "confidence_level": 0.95,
+          "sampling_unit": "patient"
+        },
+        "confusion_matrix": [
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            15
+          ]
+        ]
+      },
+      "60_plus": {
+        "task_type": "single_label",
+        "samples": 13,
+        "patients": 13,
+        "accuracy": 0.46153846153846156,
+        "macro": {
+          "auroc": 0.706084656084656,
+          "auprc": 0.6003086419753086,
+          "sensitivity": 0.3333333333333333,
+          "specificity": 0.6666666666666666,
+          "precision": 0.15384615384615385,
+          "f1": 0.21052631578947367,
+          "brier": 0.21108042446130015
+        },
+        "classes": [
+          {
+            "class": "normal",
+            "threshold": 0.5,
+            "support_positive": 3,
+            "support_negative": 10,
+            "auroc": 0.7333333333333333,
+            "auprc": 0.44285714285714284,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.17477357183141112,
+            "tn": 10,
+            "fp": 0,
+            "fn": 3,
+            "tp": 0
+          },
+          {
+            "class": "cap",
+            "threshold": 0.5,
+            "support_positive": 4,
+            "support_negative": 9,
+            "auroc": 0.6944444444444444,
+            "auprc": 0.6238095238095238,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.21358425257229405,
+            "tn": 9,
+            "fp": 0,
+            "fn": 4,
+            "tp": 0
+          },
+          {
+            "class": "covid19",
+            "threshold": 0.5,
+            "support_positive": 6,
+            "support_negative": 7,
+            "auroc": 0.6904761904761905,
+            "auprc": 0.7342592592592592,
+            "sensitivity": 1.0,
+            "specificity": 0.0,
+            "precision": 0.46153846153846156,
+            "f1": 0.631578947368421,
+            "brier": 0.2448834489801953,
+            "tn": 0,
+            "fp": 7,
+            "fn": 0,
+            "tp": 6
+          }
+        ],
+        "bootstrap": {
+          "iterations": 0,
+          "confidence_level": 0.95,
+          "sampling_unit": "patient"
+        },
+        "confusion_matrix": [
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            6
+          ]
+        ]
+      },
+      "under_40": {
+        "task_type": "single_label",
+        "samples": 9,
+        "patients": 9,
+        "accuracy": 0.4444444444444444,
+        "macro": {
+          "auroc": 0.6333333333333334,
+          "auprc": 0.6505291005291006,
+          "sensitivity": 0.3333333333333333,
+          "specificity": 0.6666666666666666,
+          "precision": 0.14814814814814814,
+          "f1": 0.20512820512820515,
+          "brier": 0.21797101886594503
+        },
+        "classes": [
+          {
+            "class": "normal",
+            "threshold": 0.5,
+            "support_positive": 4,
+            "support_negative": 5,
+            "auroc": 0.35,
+            "auprc": 0.42658730158730157,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.30592804862704737,
+            "tn": 5,
+            "fp": 0,
+            "fn": 4,
+            "tp": 0
+          },
+          {
+            "class": "cap",
+            "threshold": 0.5,
+            "support_positive": 1,
+            "support_negative": 8,
+            "auroc": 1.0,
+            "auprc": 1.0,
+            "sensitivity": 0.0,
+            "specificity": 1.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "brier": 0.09742915995578716,
+            "tn": 8,
+            "fp": 0,
+            "fn": 1,
+            "tp": 0
+          },
+          {
+            "class": "covid19",
+            "threshold": 0.5,
+            "support_positive": 4,
+            "support_negative": 5,
+            "auroc": 0.55,
+            "auprc": 0.525,
+            "sensitivity": 1.0,
+            "specificity": 0.0,
+            "precision": 0.4444444444444444,
+            "f1": 0.6153846153846154,
+            "brier": 0.2505558480150006,
+            "tn": 0,
+            "fp": 5,
+            "fn": 0,
+            "tp": 4
+          }
+        ],
+        "bootstrap": {
+          "iterations": 0,
+          "confidence_level": 0.95,
+          "sampling_unit": "patient"
+        },
+        "confusion_matrix": [
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            4
+          ]
+        ]
+      }
+    }
+  }
+}

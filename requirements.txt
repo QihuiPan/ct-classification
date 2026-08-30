@@ -1,5 +1,6 @@
 torch>=2.2
 monai>=1.3
+huggingface-hub>=0.30
 SimpleITK>=2.3
 numpy>=1.26,<3
 pandas>=2.1
@@ -10,4 +11,3 @@ seaborn>=0.13
 PyYAML>=6.0
 tqdm>=4.66
 pytest>=8.0
-

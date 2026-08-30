@@ -1,0 +1,82 @@
+seed: 2026
+task:
+  type: single_label
+  classes:
+  - normal
+  - cap
+  - covid19
+data:
+  manifest: E:\Codex\ct-classification\datasets\COVID-CT-MD\manifest.csv
+  patient_id_column: patient_id
+  study_id_column: study_id
+  image_path_column: image_path
+  dicom_series_id_column: series_instance_uid
+  site_column: site
+  split_column: split
+  label_columns:
+  - label
+  target_spacing:
+  - 3.0
+  - 2.0
+  - 2.0
+  target_size:
+  - 64
+  - 128
+  - 128
+  windows:
+  - name: lung
+    center: -600
+    width: 1500
+  - name: mediastinum
+    center: 40
+    width: 400
+  body_crop: true
+  body_threshold_hu: -900
+  cache_dir: E:\Codex\ct-classification\cache\covid_ct_md
+  batch_size: 1
+  num_workers: 2
+split:
+  mode: patient_random
+  train_fraction: 0.7
+  val_fraction: 0.15
+  test_fraction: 0.15
+  external_test_sites: []
+augmentation:
+  enabled: true
+  flip_probability: 0.0
+  rotate_degrees: 6.0
+  scale_range: 0.06
+  noise_std: 0.01
+model:
+  architecture: resnet18
+  dropout: 0.0
+  pretrained_checkpoint: null
+  strict_checkpoint_loading: false
+  freeze_backbone_epochs: 0
+training:
+  epochs: 30
+  learning_rate: 0.0002
+  weight_decay: 1.0e-05
+  optimizer: adamw
+  scheduler: cosine
+  loss: auto
+  focal_gamma: 2.0
+  label_smoothing: 0.05
+  class_weighting: true
+  balanced_sampler: false
+  mixed_precision: true
+  gradient_accumulation_steps: 2
+  early_stopping_patience: 7
+evaluation:
+  calibrate_probabilities: true
+  threshold_method: youden
+  abstain_confidence: 0.6
+  abstain_margin: 0.1
+  bootstrap_iterations: 500
+  confidence_level: 0.95
+  bootstrap_seed: 2026
+  subgroup_columns:
+  - sex
+  - age_group
+output:
+  run_dir: E:\Codex\ct-classification\runs\covid_ct_md

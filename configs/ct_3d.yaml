@@ -49,6 +49,8 @@ augmentation:
 model:
   architecture: densenet121
   dropout: 0.2
+  # 仅适用于 resnet18；从 MONAI 支持的 MedicalNet 23-dataset 权重进行真正的 3D fine-tune。
+  medicalnet_pretrained: false
   # 填入同结构的 3D 医学影像预训练权重即可真正进行 fine-tune；留空则随机初始化。
   pretrained_checkpoint: null
   strict_checkpoint_loading: false

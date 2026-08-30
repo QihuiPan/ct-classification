@@ -4,6 +4,28 @@
 
 > 该工程不能替代医生诊断。任何临床使用都需要独立的临床验证、隐私/伦理审查、质量管理和适用地区的合规评估。
 
+## COVID-CT-MD 实验
+
+本仓库包含 `configs/covid_ct_md.yaml` 和 `scripts/prepare_covid_ct_md.py`，用于公开的 [COVID-CT-MD](https://github.com/ShahinSHH/COVID-CT-MD) 三分类任务：Normal（76 人）、CAP（60 人）和 COVID-19（169 人）。配置把数据、预处理缓存、模型和训练结果放在 `E:/Codex/ct-classification`，这些大文件不会提交到 GitHub。来源、校验值和限制见 `DATASET_CARD_COVID_CT_MD.md`。
+
+下载并解压官方 Figshare 文件后，生成患者级 manifest：
+
+```powershell
+python scripts/prepare_covid_ct_md.py `
+  --dataset-root E:/Codex/ct-classification/datasets/COVID-CT-MD/raw `
+  --output E:/Codex/ct-classification/datasets/COVID-CT-MD/manifest.csv
+python scripts/validate_data.py --config configs/covid_ct_md.yaml
+python scripts/train.py --config configs/covid_ct_md.yaml
+```
+
+也可以用 `scripts/setup_covid_ct_md.ps1` 续传官方压缩包、核对文件大小与 MD5、解压并生成 manifest。默认存储根目录就是 `E:/Codex/ct-classification`。
+
+环境安装完成后，`scripts/run_covid_ct_md.ps1` 会把临时目录及 Matplotlib、PyTorch、Hugging Face 等缓存一并锁定到 E 盘，先验证全部 CT 再开始训练。
+
+已完成的可复现实验、基线与 MedicalNet fine-tune 对比、患者级 bootstrap 置信区间及负面结果说明见 `RESULTS_COVID_CT_MD.md`；聚合图表和指标位于 `results/covid_ct_md/`。
+
+脚本会核对已发表的 169/60/76 患者数，使用 DICOM SeriesInstanceUID 读取切片顺序，并从已脱敏的 DICOM 元数据保留性别和年龄组用于亚组评估。COVID-CT-MD 配置通过 MONAI 严格载入在 23 个医学数据集上预训练的官方 MedicalNet 3D ResNet-18 权重，将单通道首层权重平均扩展到肺窗和纵隔窗两个通道，再替换三分类头进行真正的 fine-tune。
+
 ## 1. 数据准备
 
 每一行代表一个 CT 检查。`image_path` 可以是一个 DICOM 序列目录，也可以是 `.nii` / `.nii.gz` 文件。
