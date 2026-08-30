@@ -1,0 +1,5 @@
+patient_id,study_id,image_path,site,label,split
+P0001,S0001,D:/ct_data/P0001/S0001,Hospital_A,negative,train
+P0002,S0002,D:/ct_data/P0002/S0002.nii.gz,Hospital_A,positive,val
+P0003,S0003,D:/ct_data/P0003/S0003,Hospital_B,positive,test
+

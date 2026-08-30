@@ -1,0 +1,84 @@
+seed: 2026
+
+task:
+  # single_label: 每个检查只属于一个类别；multi_label: 一个检查可同时有多个阳性标签。
+  type: single_label
+  classes: [negative, positive]
+
+data:
+  manifest: data/manifest.csv
+  patient_id_column: patient_id
+  study_id_column: study_id
+  image_path_column: image_path
+  # 同一目录含多个 DICOM Series 时，建议在 manifest 增加 SeriesInstanceUID 列并在这里写列名。
+  dicom_series_id_column: null
+  site_column: site
+  split_column: split
+  # single_label 时使用一个字符串/整数标签列；multi_label 时按 classes 顺序填写多个 0/1 列。
+  label_columns: [label]
+  # 顺序均为 z, y, x。先按物理体素间距重采样，再居中裁剪或填充。
+  target_spacing: [2.5, 1.5, 1.5]
+  target_size: [96, 160, 160]
+  # 多窗作为多输入通道；可按病种删除或修改。例如肺窗、纵隔窗、骨窗。
+  windows:
+    - {name: lung, center: -600, width: 1500}
+    - {name: mediastinum, center: 40, width: 400}
+    - {name: bone, center: 300, width: 1500}
+  body_crop: true
+  body_threshold_hu: -900
+  cache_dir: work/cache
+  batch_size: 2
+  num_workers: 2
+
+split:
+  # patient_random、external_site 或 existing。
+  mode: patient_random
+  train_fraction: 0.70
+  val_fraction: 0.15
+  test_fraction: 0.15
+  external_test_sites: []
+
+augmentation:
+  enabled: true
+  # 若任务含左右侧信息，必须保持为 0；只有医学上确认左右翻转不改变标签时才能启用。
+  flip_probability: 0.0
+  rotate_degrees: 7.0
+  scale_range: 0.08
+  noise_std: 0.015
+
+model:
+  architecture: densenet121
+  dropout: 0.2
+  # 填入同结构的 3D 医学影像预训练权重即可真正进行 fine-tune；留空则随机初始化。
+  pretrained_checkpoint: null
+  strict_checkpoint_loading: false
+  freeze_backbone_epochs: 0
+
+training:
+  epochs: 60
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  optimizer: adamw
+  scheduler: cosine
+  loss: auto
+  focal_gamma: 2.0
+  label_smoothing: 0.0
+  class_weighting: true
+  balanced_sampler: false
+  mixed_precision: true
+  gradient_accumulation_steps: 1
+  early_stopping_patience: 12
+
+evaluation:
+  calibrate_probabilities: true
+  threshold_method: youden
+  abstain_confidence: 0.60
+  abstain_margin: 0.10
+  bootstrap_iterations: 1000
+  confidence_level: 0.95
+  bootstrap_seed: 2026
+  # 还可以加入 sex、age_group、scanner_model 等 manifest 列。
+  subgroup_columns: [site]
+
+output:
+  run_dir: runs/ct_3d
