@@ -1,0 +1,115 @@
+seed: 2026
+
+task:
+  type: multi_label
+  # Stable order from the official CT-CLIP implementation and CT-RATE label CSV files.
+  classes:
+    - Medical material
+    - Arterial wall calcification
+    - Cardiomegaly
+    - Pericardial effusion
+    - Coronary artery wall calcification
+    - Hiatal hernia
+    - Lymphadenopathy
+    - Emphysema
+    - Atelectasis
+    - Lung nodule
+    - Lung opacity
+    - Pulmonary fibrotic sequela
+    - Pleural effusion
+    - Mosaic attenuation pattern
+    - Peribronchial thickening
+    - Consolidation
+    - Bronchiectasis
+    - Interlobular septal thickening
+
+data:
+  manifest: "E:/Codex/ct-classification/datasets/CT-RATE/manifest.csv"
+  patient_id_column: patient_id
+  study_id_column: study_id
+  image_path_column: image_path
+  dicom_series_id_column: null
+  site_column: site
+  split_column: split
+  label_columns:
+    - Medical material
+    - Arterial wall calcification
+    - Cardiomegaly
+    - Pericardial effusion
+    - Coronary artery wall calcification
+    - Hiatal hernia
+    - Lymphadenopathy
+    - Emphysema
+    - Atelectasis
+    - Lung nodule
+    - Lung opacity
+    - Pulmonary fibrotic sequela
+    - Pleural effusion
+    - Mosaic attenuation pattern
+    - Peribronchial thickening
+    - Consolidation
+    - Bronchiectasis
+    - Interlobular septal thickening
+  # Pilot geometry sized for an RTX 4080 SUPER 16 GB. This is not the full CT-CLIP geometry.
+  target_spacing: [3.0, 1.5, 1.5]
+  target_size: [96, 192, 192]
+  windows:
+    - {name: lung, center: -600, width: 1500}
+    - {name: mediastinum, center: 40, width: 400}
+  body_crop: true
+  body_threshold_hu: -900
+  cache_dir: "E:/Codex/ct-classification/cache/ct_rate_pilot"
+  batch_size: 1
+  num_workers: 2
+
+split:
+  # Official training patients remain train. Official validation patients are split by patient hash
+  # into local val/test so thresholds never use the held-out local test patients.
+  mode: existing
+  train_fraction: 0.90
+  val_fraction: 0.05
+  test_fraction: 0.05
+  external_test_sites: []
+
+augmentation:
+  enabled: true
+  flip_probability: 0.0
+  rotate_degrees: 4.0
+  scale_range: 0.04
+  noise_std: 0.01
+
+model:
+  architecture: resnet18
+  dropout: 0.1
+  medicalnet_pretrained: true
+  pretrained_checkpoint: null
+  strict_checkpoint_loading: false
+  freeze_backbone_epochs: 2
+
+training:
+  epochs: 20
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  optimizer: adamw
+  scheduler: cosine
+  loss: bce
+  focal_gamma: 2.0
+  label_smoothing: 0.0
+  class_weighting: true
+  balanced_sampler: false
+  mixed_precision: true
+  gradient_accumulation_steps: 4
+  early_stopping_patience: 5
+
+evaluation:
+  calibrate_probabilities: true
+  threshold_method: youden
+  abstain_confidence: 0.60
+  abstain_margin: 0.10
+  bootstrap_iterations: 200
+  confidence_level: 0.95
+  bootstrap_seed: 2026
+  subgroup_columns: []
+
+output:
+  run_dir: "E:/Codex/ct-classification/runs/ct_rate_pilot_medicalnet"

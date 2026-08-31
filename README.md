@@ -26,6 +26,27 @@ python scripts/train.py --config configs/covid_ct_md.yaml
 
 脚本会核对已发表的 169/60/76 患者数，使用 DICOM SeriesInstanceUID 读取切片顺序，并从已脱敏的 DICOM 元数据保留性别和年龄组用于亚组评估。COVID-CT-MD 配置通过 MONAI 严格载入在 23 个医学数据集上预训练的官方 MedicalNet 3D ResNet-18 权重，将单通道首层权重平均扩展到肺窗和纵隔窗两个通道，再替换三分类头进行真正的 fine-tune。
 
+## CT-RATE（21.3 TB）准备
+
+仓库现已包含 CT-RATE 的 18 标签 pilot 配置、Hugging Face 存取/磁盘检查、受控大小的下载规划器和患者级 manifest 生成器。完整状态、官方标签、许可边界和硬件缺口见 `CT_RATE_PLAN.md`。
+
+当前 E 盘约有 1.02 TB 可用空间，无法容纳 21.3 TB 原始数据，更无法容纳完整预处理缓存；本机 Hugging Face 也尚未登录。因此不会启动一个注定填满磁盘的“完整下载”。接受官方数据条款并登录后，可以先运行只读检查与 pilot 规划：
+
+```powershell
+python scripts/check_ct_rate_access.py
+python scripts/download_ct_rate_pilot.py
+```
+
+第二条命令默认只打印实际匹配文件数和大小；只有明确加 `--execute` 才下载。下载后执行：
+
+```powershell
+python scripts/prepare_ct_rate.py
+python scripts/validate_data.py --config configs/ct_rate_pilot.yaml
+python scripts/train.py --config configs/ct_rate_pilot.yaml
+```
+
+所有 CT-RATE 数据、缓存和检查点继续放在 `E:/Codex/ct-classification`，不会提交到 GitHub。
+
 ## 1. 数据准备
 
 每一行代表一个 CT 检查。`image_path` 可以是一个 DICOM 序列目录，也可以是 `.nii` / `.nii.gz` 文件。
