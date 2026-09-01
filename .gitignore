@@ -4,6 +4,6 @@ __pycache__/
 .pytest_cache/
 work/cache/
 runs/
+cloud_outputs/
 data/manifest.csv
 *.pt
-

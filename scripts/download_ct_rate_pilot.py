@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import fnmatch
 import json
 import shutil
@@ -11,10 +12,20 @@ from huggingface_hub import HfApi, snapshot_download
 
 REPO_ID = "ibrahimhamamci/CT-RATE"
 METADATA_PATTERNS = [
-    "README.md",
+    "dataset/README.md",
+    "dataset/data_correction_note.md",
     "dataset/metadata/**",
     "dataset/multi_abnormality_labels/**",
     "dataset/radiology_text_reports/**",
+]
+STATIC_FILES = [
+    "dataset/README.md",
+    "dataset/data_correction_note.md",
+]
+STATIC_TREE_PATHS = [
+    "dataset/metadata",
+    "dataset/multi_abnormality_labels",
+    "dataset/radiology_text_reports",
 ]
 
 
@@ -25,6 +36,13 @@ def patient_patterns(train_patients: int, valid_patients: int) -> list[str]:
     return patterns
 
 
+def patient_tree_paths(train_patients: int, valid_patients: int) -> list[str]:
+    paths = list(STATIC_TREE_PATHS)
+    paths.extend(f"dataset/train/train_{patient}" for patient in range(1, train_patients + 1))
+    paths.extend(f"dataset/valid/valid_{patient}" for patient in range(1, valid_patients + 1))
+    return paths
+
+
 def selected_files(repo_files, patterns: list[str]) -> list[dict[str, object]]:
     selected = []
     for item in repo_files:
@@ -32,6 +50,42 @@ def selected_files(repo_files, patterns: list[str]) -> list[dict[str, object]]:
         if any(fnmatch.fnmatch(name, pattern) for pattern in patterns):
             selected.append({"name": name, "size": int(item.size or 0)})
     return selected
+
+
+def targeted_repo_files(
+    api: HfApi,
+    repo_id: str,
+    train_patients: int,
+    valid_patients: int,
+    workers: int,
+) -> list[dict[str, object]]:
+    """List only the bounded pilot paths instead of expanding the full 21.3 TB repository."""
+
+    def list_tree(path: str):
+        return list(
+            api.list_repo_tree(
+                repo_id,
+                repo_type="dataset",
+                path_in_repo=path,
+                recursive=True,
+                expand=False,
+            )
+        )
+
+    paths = patient_tree_paths(train_patients, valid_patients)
+    with ThreadPoolExecutor(max_workers=max(1, min(workers, 8))) as pool:
+        trees = list(pool.map(list_tree, paths))
+
+    items = [item for tree in trees for item in tree]
+    items.extend(api.get_paths_info(repo_id, STATIC_FILES, repo_type="dataset", expand=False))
+
+    files: dict[str, dict[str, object]] = {}
+    for item in items:
+        name = getattr(item, "path", None) or getattr(item, "rfilename", None)
+        size = getattr(item, "size", None)
+        if name and size is not None:
+            files[str(name)] = {"name": str(name), "size": int(size)}
+    return [files[name] for name in sorted(files)]
 
 
 def main() -> None:
@@ -49,9 +103,14 @@ def main() -> None:
         raise ValueError("Use at least 1 train patient and 2 validation patients")
 
     api = HfApi()
-    info = api.repo_info(args.repo_id, repo_type="dataset", files_metadata=True)
     patterns = patient_patterns(args.train_patients, args.valid_patients)
-    files = selected_files(info.siblings, patterns)
+    files = targeted_repo_files(
+        api,
+        args.repo_id,
+        args.train_patients,
+        args.valid_patients,
+        args.workers,
+    )
     volume_files = [item for item in files if str(item["name"]).endswith(".nii.gz")]
     if not volume_files:
         raise RuntimeError(

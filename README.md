@@ -30,7 +30,7 @@ python scripts/train.py --config configs/covid_ct_md.yaml
 
 仓库现已包含 CT-RATE 的 18 标签 pilot 配置、Hugging Face 存取/磁盘检查、受控大小的下载规划器和患者级 manifest 生成器。完整状态、官方标签、许可边界和硬件缺口见 `CT_RATE_PLAN.md`。
 
-当前 E 盘约有 1.02 TB 可用空间，无法容纳 21.3 TB 原始数据，更无法容纳完整预处理缓存；本机 Hugging Face 也尚未登录。因此不会启动一个注定填满磁盘的“完整下载”。接受官方数据条款并登录后，可以先运行只读检查与 pilot 规划：
+当前 E 盘约有 1.02 TB 可用空间，无法容纳 21.3 TB 原始数据，更无法容纳完整预处理缓存。因此不会启动一个注定填满磁盘的“完整下载”。本机下载器只保留为可选的显式工具，未加 `--execute` 不会下载：
 
 ```powershell
 python scripts/check_ct_rate_access.py
@@ -45,7 +45,12 @@ python scripts/validate_data.py --config configs/ct_rate_pilot.yaml
 python scripts/train.py --config configs/ct_rate_pilot.yaml
 ```
 
-所有 CT-RATE 数据、缓存和检查点继续放在 `E:/Codex/ct-classification`，不会提交到 GitHub。
+若显式选择本机下载路线，所有 CT-RATE 数据和缓存必须位于 `E:/Codex/ct-classification`，不会提交到 GitHub。
+
+当前采用的执行路线是 Hugging Face Jobs。`configs/ct_rate_hf_pilot.yaml` 和
+`scripts/run_ct_rate_hf_cloud.py` 会把受控数据集作为唯读云端 volume 挂载，只按需读取
+48 名训练患者和 16 名官方验证患者；CT 影像不会下载到本机。患者级 manifest、路径和预测
+只存在于 Job 的临时磁盘，完成后仅同步模型、训练历史、聚合指标和图表。
 
 ## 1. 数据准备
 

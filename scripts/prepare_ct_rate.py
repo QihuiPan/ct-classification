@@ -84,14 +84,29 @@ def _label_table(path: Path) -> pd.DataFrame:
     return frame.set_index("_volume_key", drop=True)
 
 
-def _volume_paths(dataset_dir: Path, source_split: str) -> list[Path]:
+def _volume_paths(
+    dataset_dir: Path,
+    source_split: str,
+    patient_count: int | None = None,
+) -> list[Path]:
     root = dataset_dir / source_split
     if not root.exists():
         return []
+    if patient_count is not None:
+        paths: list[Path] = []
+        for patient in range(1, patient_count + 1):
+            patient_root = root / f"{source_split}_{patient}"
+            if patient_root.exists():
+                paths.extend(patient_root.rglob(f"{source_split}_*.nii.gz"))
+        return sorted(paths)
     return sorted(root.rglob(f"{source_split}_*.nii.gz"))
 
 
-def build_manifest(dataset_root: str | Path) -> pd.DataFrame:
+def build_manifest(
+    dataset_root: str | Path,
+    train_patients: int | None = None,
+    valid_patients: int | None = None,
+) -> pd.DataFrame:
     root = Path(dataset_root).expanduser().resolve()
     dataset_dir = _dataset_dir(root)
     label_dir = dataset_dir / "multi_abnormality_labels"
@@ -102,9 +117,10 @@ def build_manifest(dataset_root: str | Path) -> pd.DataFrame:
 
     rows: list[dict[str, object]] = []
     missing_labels: list[str] = []
+    patient_limits = {"train": train_patients, "valid": valid_patients}
     for source_split in ("train", "valid"):
         table = tables[source_split]
-        for image_path in _volume_paths(dataset_dir, source_split):
+        for image_path in _volume_paths(dataset_dir, source_split, patient_limits[source_split]):
             parsed = parse_volume_name(image_path)
             key = parsed["volume_name"]
             if key not in table.index:
@@ -152,9 +168,19 @@ def main() -> None:
         "--output",
         default="E:/Codex/ct-classification/datasets/CT-RATE/manifest.csv",
     )
+    parser.add_argument("--train-patients", type=int)
+    parser.add_argument("--valid-patients", type=int)
     args = parser.parse_args()
+    if args.train_patients is not None and args.train_patients < 1:
+        raise ValueError("--train-patients must be at least 1")
+    if args.valid_patients is not None and args.valid_patients < 2:
+        raise ValueError("--valid-patients must be at least 2")
 
-    frame = build_manifest(args.dataset_root)
+    frame = build_manifest(
+        args.dataset_root,
+        train_patients=args.train_patients,
+        valid_patients=args.valid_patients,
+    )
     output = Path(args.output).expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(output, index=False)

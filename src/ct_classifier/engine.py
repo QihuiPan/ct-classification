@@ -238,7 +238,8 @@ def evaluate_and_save(
         raw.get("subgroups", {}),
     )
     output = ensure_dir(output_dir)
-    table.to_csv(output / f"{split_name}_predictions.csv", index=False)
+    if bool(config.get("output", {}).get("save_patient_level_artifacts", True)):
+        table.to_csv(output / f"{split_name}_predictions.csv", index=False)
     save_json(metrics, output / f"{split_name}_metrics.json")
     save_diagnostic_plots(
         targets,
@@ -261,9 +262,10 @@ def train_model(
 ) -> Path:
     output = ensure_dir(config["output"]["run_dir"])
     save_config(config, output / "resolved_config.yaml")
-    pd.concat([train_frame, val_frame, test_frame], ignore_index=True).to_csv(
-        output / "manifest_with_splits.csv", index=False
-    )
+    if bool(config.get("output", {}).get("save_patient_level_artifacts", True)):
+        pd.concat([train_frame, val_frame, test_frame], ignore_index=True).to_csv(
+            output / "manifest_with_splits.csv", index=False
+        )
 
     train_loader = create_loader(train_frame, config, training=True)
     val_loader = create_loader(val_frame, config, training=False)

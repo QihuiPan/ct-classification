@@ -1,6 +1,6 @@
 # CT-RATE 训练准备与当前边界
 
-状态日期：2026-08-31
+状态日期：2026-09-01
 
 ## 官方任务
 
@@ -39,7 +39,7 @@ CT-RATE 官方数据集包含 21,304 名患者的 25,692 次非增强胸部 CT �
 
 - E 盘可用空间约 1.02 TB。
 - 完整数据本身为 21.3 TB；按 15% 安全余量计算，需要约 24.5 TB 可用空间，尚未包含预处理缓存、检查点和中间结果。
-- 本机 Hugging Face CLI 当前未登录，也尚未证明此账号已接受 CT-RATE 的受控访问条款。
+- Hugging Face 账号 `pitaya29` 已登录，并已由用户本人接受 CT-RATE 受控访问条款。
 - RTX 4080 SUPER 具有 16 GB 显存，适合先运行降低空间分辨率的 MedicalNet 3D ResNet-18 pilot；不适合在本机单卡完整复现 CT-CLIP 的 480x480x240 训练。
 
 因此，当前不能诚实地声称“21.3 TB 已下载并完成训练”。直接开始完整下载会在约 5% 进度前耗尽 E 盘。
@@ -50,7 +50,18 @@ CT-RATE 官方数据集包含 21,304 名患者的 25,692 次非增强胸部 CT �
 - `scripts/download_ct_rate_pilot.py`：先计算准确下载文件数与大小，确认 20% 空间余量后才允许执行有限患者 pilot。
 - `scripts/prepare_ct_rate.py`：读取官方 NIfTI 路径和 18 标签 CSV，按患者生成无泄漏 manifest。
 - `configs/ct_rate_pilot.yaml`：面向 16 GB GPU 的 18 标签 MedicalNet pilot 配置，所有缓存和训练结果位于 E 盘。
+- `configs/ct_rate_hf_pilot.yaml`：面向 Hugging Face Jobs L4 24 GB GPU 的云端 pilot 配置。
+- `scripts/run_ct_rate_hf_cloud.py`：从唯读 CT-RATE 云端 volume 构建有限 manifest 并训练，不导出患者级工件。
 - `tests/test_ct_rate.py`：锁定标签顺序、文件名解析和患者隔离行为。
+
+## Hugging Face Jobs 路线
+
+当前路线不会把 CT-RATE 影像下载到本机。Job 将官方数据集挂载为唯读 volume，文件仅在云端按需读取；
+源代码和一个空输出目录经私有 `jobs-artifacts` bucket 挂载。Job 的 manifest、患者路径、患者级预测
+和预处理缓存都写在临时磁盘，完成后只拉回 checkpoint、聚合指标、图表和训练历史。
+
+默认 pilot 使用 1x Nvidia L4（24 GB 显存、400 GB 临时磁盘），选择 48 名训练患者和 16 名官方
+验证患者，设置最大执行时间以限制计费。启动前必须再次确认实时硬件单价和最大可能费用。
 
 ## 获得授权后的执行顺序
 
