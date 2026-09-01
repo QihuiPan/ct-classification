@@ -37,7 +37,7 @@
 - ROC、PR 和 calibration 聚合图
 - `resolved_config.yaml`：本次实验的完整可复现配置
 
-126MB 的 `best.pt` 不进入 Git 历史，作为 GitHub Release 资产发布；SHA-256 为 `b99abc58677c8947d4ac6aaf4ed25ae4999a713b814c9e7c8edf765aefc2655d`。原始 CT、临时 manifest 和患者级预测不发布。
+126MB 的 `best.pt` 不进入 Git 历史。由于当前网络无法稳定完成单个 126MB 上传，[v0.3.0 Release](https://github.com/QihuiPan/ct-classification/releases/tag/v0.3.0) 将它无损拆成七个 `best.pt.partNN` 资产，并附带 `REASSEMBLE.md`、分片校验值和完整文件校验值；重组后的 SHA-256 为 `b99abc58677c8947d4ac6aaf4ed25ae4999a713b814c9e7c8edf765aefc2655d`。原始 CT、临时 manifest 和患者级预测不发布。
 
 ## 主要限制
 
