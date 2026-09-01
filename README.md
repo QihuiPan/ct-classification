@@ -26,7 +26,7 @@ python scripts/train.py --config configs/covid_ct_md.yaml
 
 脚本会核对已发表的 169/60/76 患者数，使用 DICOM SeriesInstanceUID 读取切片顺序，并从已脱敏的 DICOM 元数据保留性别和年龄组用于亚组评估。COVID-CT-MD 配置通过 MONAI 严格载入在 23 个医学数据集上预训练的官方 MedicalNet 3D ResNet-18 权重，将单通道首层权重平均扩展到肺窗和纵隔窗两个通道，再替换三分类头进行真正的 fine-tune。
 
-## CT-RATE（21.3 TB）准备
+## CT-RATE（21.3 TB）Pilot
 
 仓库现已包含 CT-RATE 的 18 标签 pilot 配置、Hugging Face 存取/磁盘检查、受控大小的下载规划器和患者级 manifest 生成器。完整状态、官方标签、许可边界和硬件缺口见 `CT_RATE_PLAN.md`。
 
@@ -51,6 +51,11 @@ python scripts/train.py --config configs/ct_rate_pilot.yaml
 `scripts/run_ct_rate_hf_cloud.py` 会把受控数据集作为唯读云端 volume 挂载，只按需读取
 48 名训练患者和 16 名官方验证患者；CT 影像不会下载到本机。患者级 manifest、路径和预测
 只存在于 Job 的临时磁盘，完成后仅同步模型、训练历史、聚合指标和图表。
+
+16GB T4 云端 pilot 已完成：训练/验证/测试分别包含 48/7/9 名患者和 128/16/20 个
+CT study，MedicalNet 3D ResNet-18 的最佳验证 macro AUROC 为 0.6188，独立测试 macro
+AUROC 为 0.5198。完整实验记录、限制和复现信息见 `RESULTS_CT_RATE_PILOT.md`，聚合结果位于
+`results/ct_rate_pilot_medicalnet/`。这是小样本工程验证，不是临床性能声明。
 
 ## 1. 数据准备
 

@@ -1,0 +1,805 @@
+{
+  "task_type": "multi_label",
+  "samples": 16,
+  "patients": 7,
+  "accuracy": 0.0,
+  "macro": {
+    "auroc": 0.6188186813186813,
+    "auprc": 0.3390360154249043,
+    "sensitivity": 0.926923076923077,
+    "specificity": 0.5137566137566137,
+    "precision": 0.33356905440238777,
+    "f1": 0.39580789580789577,
+    "brier": 0.2502619150207472
+  },
+  "classes": [
+    {
+      "class": "Medical material",
+      "threshold": 0.5036406828204775,
+      "support_positive": 4,
+      "support_negative": 12,
+      "auroc": 0.75,
+      "auprc": 0.4861111111111111,
+      "sensitivity": 1.0,
+      "specificity": 0.5833333333333334,
+      "precision": 0.4444444444444444,
+      "f1": 0.6153846153846154,
+      "brier": 0.2498860053660814,
+      "tn": 7,
+      "fp": 5,
+      "fn": 0,
+      "tp": 4,
+      "confidence_intervals": {
+        "auroc": [
+          0.460416666666667,
+          0.9079166666666666
+        ],
+        "auprc": [
+          0.0,
+          0.9148660714285717
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.35654761904761917,
+          0.8343750000000003
+        ]
+      }
+    },
+    {
+      "class": "Arterial wall calcification",
+      "threshold": 0.5039580471101609,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 1.0,
+      "auprc": 1.0,
+      "sensitivity": 1.0,
+      "specificity": 1.0,
+      "precision": 1.0,
+      "f1": 1.0,
+      "brier": 0.25112200872637663,
+      "tn": 14,
+      "fp": 0,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.9999999999999999,
+          1.0
+        ],
+        "auprc": [
+          0.0,
+          1.0
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "Cardiomegaly",
+      "threshold": 0.5,
+      "support_positive": 0,
+      "support_negative": 16,
+      "auroc": null,
+      "auprc": 0.0,
+      "sensitivity": null,
+      "specificity": 0.0,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.25228463991359107,
+      "tn": 0,
+      "fp": 16,
+      "fn": 0,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": null,
+        "auprc": [
+          0.0,
+          0.0
+        ],
+        "sensitivity": null,
+        "specificity": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "class": "Pericardial effusion",
+      "threshold": 0.5,
+      "support_positive": 0,
+      "support_negative": 16,
+      "auroc": null,
+      "auprc": 0.0,
+      "sensitivity": null,
+      "specificity": 0.125,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.25634047435874907,
+      "tn": 2,
+      "fp": 14,
+      "fn": 0,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": null,
+        "auprc": [
+          0.0,
+          0.0
+        ],
+        "sensitivity": null,
+        "specificity": [
+          0.0,
+          0.2857142857142857
+        ]
+      }
+    },
+    {
+      "class": "Coronary artery wall calcification",
+      "threshold": 0.5,
+      "support_positive": 0,
+      "support_negative": 16,
+      "auroc": null,
+      "auprc": 0.0,
+      "sensitivity": null,
+      "specificity": 0.625,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.24993639894077485,
+      "tn": 10,
+      "fp": 6,
+      "fn": 0,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": null,
+        "auprc": [
+          0.0,
+          0.0
+        ],
+        "sensitivity": null,
+        "specificity": [
+          0.375,
+          0.875
+        ]
+      }
+    },
+    {
+      "class": "Hiatal hernia",
+      "threshold": 0.49795075605658445,
+      "support_positive": 4,
+      "support_negative": 12,
+      "auroc": 0.9583333333333334,
+      "auprc": 0.9166666666666666,
+      "sensitivity": 1.0,
+      "specificity": 0.8333333333333334,
+      "precision": 0.6666666666666666,
+      "f1": 0.8,
+      "brier": 0.24756744017473356,
+      "tn": 10,
+      "fp": 2,
+      "fn": 0,
+      "tp": 4,
+      "confidence_intervals": {
+        "auroc": [
+          0.8571428571428571,
+          1.0
+        ],
+        "auprc": [
+          0.0,
+          1.0
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.6243750000000001,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "Lymphadenopathy",
+      "threshold": 0.4988807697149322,
+      "support_positive": 4,
+      "support_negative": 12,
+      "auroc": 0.3541666666666667,
+      "auprc": 0.25416666666666665,
+      "sensitivity": 0.75,
+      "specificity": 0.4166666666666667,
+      "precision": 0.3,
+      "f1": 0.42857142857142855,
+      "brier": 0.25019270143810934,
+      "tn": 5,
+      "fp": 7,
+      "fn": 1,
+      "tp": 3,
+      "confidence_intervals": {
+        "auroc": [
+          0.16666666666666663,
+          0.6666666666666667
+        ],
+        "auprc": [
+          0.0,
+          0.6231398809523814
+        ],
+        "sensitivity": [
+          0.5,
+          1.0
+        ],
+        "specificity": [
+          0.07142857142857142,
+          0.7860714285714286
+        ]
+      }
+    },
+    {
+      "class": "Emphysema",
+      "threshold": 0.5,
+      "support_positive": 0,
+      "support_negative": 16,
+      "auroc": null,
+      "auprc": 0.0,
+      "sensitivity": null,
+      "specificity": 0.0625,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.2524880040783747,
+      "tn": 1,
+      "fp": 15,
+      "fn": 0,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": null,
+        "auprc": [
+          0.0,
+          0.0
+        ],
+        "sensitivity": null,
+        "specificity": [
+          0.0,
+          0.21428571428571427
+        ]
+      }
+    },
+    {
+      "class": "Atelectasis",
+      "threshold": 0.49737551238471617,
+      "support_positive": 4,
+      "support_negative": 12,
+      "auroc": 0.7083333333333334,
+      "auprc": 0.575,
+      "sensitivity": 1.0,
+      "specificity": 0.5,
+      "precision": 0.4,
+      "f1": 0.5714285714285714,
+      "brier": 0.24795626165501833,
+      "tn": 6,
+      "fp": 6,
+      "fn": 0,
+      "tp": 4,
+      "confidence_intervals": {
+        "auroc": [
+          0.2883928571428571,
+          1.0
+        ],
+        "auprc": [
+          0.0,
+          1.0
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.22202380952380954,
+          0.8781250000000007
+        ]
+      }
+    },
+    {
+      "class": "Lung nodule",
+      "threshold": 0.5010055528668302,
+      "support_positive": 10,
+      "support_negative": 6,
+      "auroc": 0.4833333333333333,
+      "auprc": 0.7311813186813186,
+      "sensitivity": 0.3,
+      "specificity": 1.0,
+      "precision": 1.0,
+      "f1": 0.46153846153846156,
+      "brier": 0.25046694378066187,
+      "tn": 6,
+      "fp": 0,
+      "fn": 7,
+      "tp": 3,
+      "confidence_intervals": {
+        "auroc": [
+          0.14285714285714285,
+          0.9406250000000002
+        ],
+        "auprc": [
+          0.41361877705627714,
+          0.9999999999999998
+        ],
+        "sensitivity": [
+          0.0,
+          0.8333333333333334
+        ],
+        "specificity": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "Lung opacity",
+      "threshold": 0.5020416146765633,
+      "support_positive": 6,
+      "support_negative": 10,
+      "auroc": 0.4333333333333333,
+      "auprc": 0.3832163207163207,
+      "sensitivity": 1.0,
+      "specificity": 0.2,
+      "precision": 0.42857142857142855,
+      "f1": 0.6,
+      "brier": 0.2509024656629241,
+      "tn": 2,
+      "fp": 8,
+      "fn": 0,
+      "tp": 6,
+      "confidence_intervals": {
+        "auroc": [
+          0.08333333333333333,
+          0.8333333333333333
+        ],
+        "auprc": [
+          0.11858974358974358,
+          0.9190270562770563
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.0,
+          0.4166666666666667
+        ]
+      }
+    },
+    {
+      "class": "Pulmonary fibrotic sequela",
+      "threshold": 0.4981399621704009,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 0.8571428571428571,
+      "auprc": 0.45,
+      "sensitivity": 1.0,
+      "specificity": 0.7857142857142857,
+      "precision": 0.4,
+      "f1": 0.5714285714285714,
+      "brier": 0.2468957091393843,
+      "tn": 11,
+      "fp": 3,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.625,
+          1.0
+        ],
+        "auprc": [
+          0.0,
+          1.0
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "Pleural effusion",
+      "threshold": 0.5024459644215727,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 0.7857142857142857,
+      "auprc": 0.4,
+      "sensitivity": 1.0,
+      "specificity": 0.7857142857142857,
+      "precision": 0.4,
+      "f1": 0.5714285714285714,
+      "brier": 0.24951229639530162,
+      "tn": 11,
+      "fp": 3,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.41666666666666663,
+          1.0
+        ],
+        "auprc": [
+          0.0,
+          1.0
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.497916666666667,
+          1.0
+        ]
+      }
+    },
+    {
+      "class": "Mosaic attenuation pattern",
+      "threshold": 0.49462301012141097,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 0.25,
+      "auprc": 0.12237762237762238,
+      "sensitivity": 1.0,
+      "specificity": 0.21428571428571427,
+      "precision": 0.15384615384615385,
+      "f1": 0.26666666666666666,
+      "brier": 0.25024383593376803,
+      "tn": 3,
+      "fp": 11,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.0357142857142857,
+          0.4642857142857143
+        ],
+        "auprc": [
+          0.0,
+          0.29955072501028385
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.0,
+          0.5
+        ]
+      }
+    },
+    {
+      "class": "Peribronchial thickening",
+      "threshold": 0.49492815257464223,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 0.0357142857142857,
+      "auprc": 0.09821428571428571,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "precision": 0.125,
+      "f1": 0.2222222222222222,
+      "brier": 0.2507600140921776,
+      "tn": 0,
+      "fp": 14,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.0,
+          0.10517857142857139
+        ],
+        "auprc": [
+          0.0,
+          0.3509902597402598
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "class": "Consolidation",
+      "threshold": 0.5008575431161256,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 0.7857142857142857,
+      "auprc": 0.4,
+      "sensitivity": 1.0,
+      "specificity": 0.7857142857142857,
+      "precision": 0.4,
+      "f1": 0.5714285714285714,
+      "brier": 0.2492842551823225,
+      "tn": 11,
+      "fp": 3,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.625,
+          0.9285714285714285
+        ],
+        "auprc": [
+          0.0,
+          0.8579365079365081
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.625,
+          0.9285714285714286
+        ]
+      }
+    },
+    {
+      "class": "Bronchiectasis",
+      "threshold": 0.5,
+      "support_positive": 0,
+      "support_negative": 16,
+      "auroc": null,
+      "auprc": 0.0,
+      "sensitivity": null,
+      "specificity": 0.6875,
+      "precision": 0.0,
+      "f1": 0.0,
+      "brier": 0.2469867625034885,
+      "tn": 11,
+      "fp": 5,
+      "fn": 0,
+      "tp": 0,
+      "confidence_intervals": {
+        "auroc": null,
+        "auprc": [
+          0.0,
+          0.0
+        ],
+        "sensitivity": null,
+        "specificity": [
+          0.42857142857142855,
+          0.9098011363636365
+        ]
+      }
+    },
+    {
+      "class": "Interlobular septal thickening",
+      "threshold": 0.5037078177736051,
+      "support_positive": 2,
+      "support_negative": 14,
+      "auroc": 0.6428571428571428,
+      "auprc": 0.2857142857142857,
+      "sensitivity": 1.0,
+      "specificity": 0.6428571428571429,
+      "precision": 0.2857142857142857,
+      "f1": 0.4444444444444444,
+      "brier": 0.25188825303161216,
+      "tn": 9,
+      "fp": 5,
+      "fn": 0,
+      "tp": 2,
+      "confidence_intervals": {
+        "auroc": [
+          0.405,
+          0.8799999999999992
+        ],
+        "auprc": [
+          0.0,
+          0.8
+        ],
+        "sensitivity": [
+          1.0,
+          1.0
+        ],
+        "specificity": [
+          0.4166666666666667,
+          0.9
+        ]
+      }
+    }
+  ],
+  "bootstrap": {
+    "iterations": 200,
+    "confidence_level": 0.95,
+    "sampling_unit": "patient"
+  },
+  "confusion_matrices": [
+    [
+      [
+        7,
+        5
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    [
+      [
+        14,
+        0
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        0,
+        16
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        2,
+        14
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        10,
+        6
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        10,
+        2
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    [
+      [
+        5,
+        7
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    [
+      [
+        1,
+        15
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        6,
+        6
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    [
+      [
+        6,
+        0
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    [
+      [
+        2,
+        8
+      ],
+      [
+        0,
+        6
+      ]
+    ],
+    [
+      [
+        11,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        11,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        3,
+        11
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        0,
+        14
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        11,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        11,
+        5
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        9,
+        5
+      ],
+      [
+        0,
+        2
+      ]
+    ]
+  ],
+  "temperature": 20.0
+}

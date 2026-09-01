@@ -1,0 +1,4 @@
+split,patients,studies,positive_Medical material,positive_Arterial wall calcification,positive_Cardiomegaly,positive_Pericardial effusion,positive_Coronary artery wall calcification,positive_Hiatal hernia,positive_Lymphadenopathy,positive_Emphysema,positive_Atelectasis,positive_Lung nodule,positive_Lung opacity,positive_Pulmonary fibrotic sequela,positive_Pleural effusion,positive_Mosaic attenuation pattern,positive_Peribronchial thickening,positive_Consolidation,positive_Bronchiectasis,positive_Interlobular septal thickening
+test,9,20,0,2,2,0,2,4,6,4,2,10,12,6,4,2,0,4,0,2
+train,48,128,26,43,15,11,35,12,40,18,33,66,53,29,20,6,12,36,12,16
+val,7,16,4,2,0,0,0,4,4,0,4,10,6,2,2,2,2,2,0,2
