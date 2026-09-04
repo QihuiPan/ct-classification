@@ -1,6 +1,6 @@
 # CT-RATE expanded cloud experiment
 
-Status as of 2026-09-04 09:07 UTC: **Submitted; waiting for GPU allocation.**
+Status as of 2026-09-04: **Running; first training epoch in progress. No final results yet.**
 This is a larger sampled experiment, not full 21.3TB training and not clinical validation.
 
 ## Submitted job
@@ -14,9 +14,15 @@ This is a larger sampled experiment, not full 21.3TB training and not clinical v
   The uploaded source archive records local commit `c8bea0aad95f75d0484bba95891e92f734241966`;
   both commits were verified to have the same tree.
 - Dataset revision: `deeca4d89e9f978d4d1bccd88a55071ddbb146bb`, read-only cloud mount.
-- This is a single authorized job with no automatic resubmission. At this status check,
-  allocation had not completed: no actual cohort counts, epochs or expanded-run metrics
-  are yet available. The counts below remain targets until verified by the job outputs.
+- Allocation completed at 09:11:03 UTC. The 09:16 UTC status check reported `RUNNING`,
+  and the subsequent log check confirmed batch processing in the first training epoch.
+- The cloud-generated `expanded_job.json` verified 512 train, 64 validation and 64 test
+  patients, one volume each. Its manifest SHA-256 is
+  `6b8efbd5a07e51045110f3ef951a784582fba0ff71ae1473d3ca8511e889e445`.
+  The patient-level manifest remains in cloud ephemeral storage.
+- This is a single authorized job with no automatic resubmission. Verified cohort
+  construction and training progress are not completion: final evaluation and checkpoint
+  verification are still pending.
 
 ## Locked protocol
 
