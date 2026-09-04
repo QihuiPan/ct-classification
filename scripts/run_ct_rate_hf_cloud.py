@@ -7,6 +7,18 @@ from pathlib import Path
 import subprocess
 import sys
 
+import yaml
+
+
+def runtime_config(repository: Path, manifest: Path, output_root: Path) -> dict:
+    """Keep sensitive artifacts ephemeral and honor the selected output mount."""
+    template = repository / "configs" / "ct_rate_hf_pilot.yaml"
+    config = yaml.safe_load(template.read_text(encoding="utf-8"))
+    config["data"]["manifest"] = str(manifest)
+    config["output"]["run_dir"] = str(output_root / "ct_rate_pilot_medicalnet")
+    config["output"]["save_patient_level_artifacts"] = False
+    return config
+
 
 def run(command: list[str]) -> None:
     print("Running:", " ".join(command), flush=True)
@@ -20,6 +32,8 @@ def main() -> None:
     parser.add_argument("--train-patients", type=int, default=48)
     parser.add_argument("--valid-patients", type=int, default=16)
     args = parser.parse_args()
+    if args.train_patients < 1 or args.valid_patients < 2:
+        parser.error("--train-patients must be >= 1 and --valid-patients must be >= 2")
 
     repository = Path(__file__).resolve().parents[1]
     dataset_root = Path(args.dataset_root).resolve()
@@ -29,6 +43,11 @@ def main() -> None:
         raise FileNotFoundError(f"CT-RATE mount is unavailable: {dataset_root}")
     output_root.mkdir(parents=True, exist_ok=True)
     manifest.parent.mkdir(parents=True, exist_ok=True)
+    config_path = manifest.parent / "runtime_config.yaml"
+    config_path.write_text(
+        yaml.safe_dump(runtime_config(repository, manifest, output_root), sort_keys=False),
+        encoding="utf-8",
+    )
 
     provenance = {
         "job_id": os.getenv("HF_JOB_ID"),
@@ -58,7 +77,7 @@ def main() -> None:
             sys.executable,
             str(repository / "scripts" / "train.py"),
             "--config",
-            str(repository / "configs" / "ct_rate_hf_pilot.yaml"),
+            str(config_path),
         ]
     )
 

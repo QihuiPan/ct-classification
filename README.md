@@ -4,6 +4,20 @@
 
 > 该工程不能替代医生诊断。任何临床使用都需要独立的临床验证、隐私/伦理审查、质量管理和适用地区的合规评估。
 
+## 交付状态（2026-09-04）
+
+| 工作 | 状态 |
+|---|---|
+| COVID-CT-MD 全部 305 名患者：随机初始化基线与 MedicalNet fine-tune | 已训练、评估并发布 v0.2.0 |
+| CT-RATE 16GB T4 pilot：48/7/9 名训练/验证/测试患者 | 已训练、评估并发布 v0.3.0 |
+| 模型卡、聚合结果、checkpoint 校验和、发布边界 | 已提供，见下方链接 |
+| CT-RATE 21.3TB 全量训练 | **未开始**，需要新的预算上限、云端作业权限和扩容验证 |
+| 独立外部医院验证、临床验证 | **未完成**，没有可用于诊断的模型 |
+
+阅读 [模型卡](MODEL_CARDS.md)、[CT-RATE 后续计划](CT_RATE_PLAN.md) 和
+[第三方许可与隐私边界](THIRD_PARTY_NOTICES.md)。公开的是代码、汇总结果和研究模型；
+原始 CT、患者清单、患者级预测、简历和 token 不公开。
+
 ## COVID-CT-MD 实验
 
 本仓库包含 `configs/covid_ct_md.yaml` 和 `scripts/prepare_covid_ct_md.py`，用于公开的 [COVID-CT-MD](https://github.com/ShahinSHH/COVID-CT-MD) 三分类任务：Normal（76 人）、CAP（60 人）和 COVID-19（169 人）。配置把数据、预处理缓存、模型和训练结果放在 `E:/Codex/ct-classification`，这些大文件不会提交到 GitHub。来源、校验值和限制见 `DATASET_CARD_COVID_CT_MD.md`。
@@ -30,22 +44,15 @@ python scripts/train.py --config configs/covid_ct_md.yaml
 
 仓库现已包含 CT-RATE 的 18 标签 pilot 配置、Hugging Face 存取/磁盘检查、受控大小的下载规划器和患者级 manifest 生成器。完整状态、官方标签、许可边界和硬件缺口见 `CT_RATE_PLAN.md`。
 
-当前 E 盘约有 1.02 TB 可用空间，无法容纳 21.3 TB 原始数据，更无法容纳完整预处理缓存。因此不会启动一个注定填满磁盘的“完整下载”。本机下载器只保留为可选的显式工具，未加 `--execute` 不会下载：
+用户已选择**仅在 Hugging Face 云端处理 CT-RATE**，不要在本机执行下载或训练。
+仓库保留的本机下载器仅用于其他明确选择本机路线的使用者；以下命令只做访问检查与下载规划：
 
 ```powershell
 python scripts/check_ct_rate_access.py
 python scripts/download_ct_rate_pilot.py
 ```
 
-第二条命令默认只打印实际匹配文件数和大小；只有明确加 `--execute` 才下载。下载后执行：
-
-```powershell
-python scripts/prepare_ct_rate.py
-python scripts/validate_data.py --config configs/ct_rate_pilot.yaml
-python scripts/train.py --config configs/ct_rate_pilot.yaml
-```
-
-若显式选择本机下载路线，所有 CT-RATE 数据和缓存必须位于 `E:/Codex/ct-classification`，不会提交到 GitHub。
+第二条命令默认只打印实际匹配文件数和大小；只有明确加 `--execute` 才下载。本项目不执行该选项。
 
 当前采用的执行路线是 Hugging Face Jobs。`configs/ct_rate_hf_pilot.yaml` 和
 `scripts/run_ct_rate_hf_cloud.py` 会把受控数据集作为唯读云端 volume 挂载，只按需读取
@@ -53,7 +60,7 @@ python scripts/train.py --config configs/ct_rate_pilot.yaml
 只存在于 Job 的临时磁盘，完成后仅同步模型、训练历史、聚合指标和图表。
 
 16GB T4 云端 pilot 已完成：训练/验证/测试分别包含 48/7/9 名患者和 128/16/20 个
-CT study，MedicalNet 3D ResNet-18 的最佳验证 macro AUROC 为 0.6188，独立测试 macro
+CT volume（包含同一扫描的不同重建），MedicalNet 3D ResNet-18 的最佳验证 macro AUROC 为 0.6188，内部留出测试 macro
 AUROC 为 0.5198。完整实验记录、限制和复现信息见 `RESULTS_CT_RATE_PILOT.md`，聚合结果位于
 `results/ct_rate_pilot_medicalnet/`。这是小样本工程验证，不是临床性能声明。
 
@@ -177,7 +184,8 @@ python scripts/infer.py `
 4. 在不同医院、扫描仪或时间段进行外部测试。
 5. 检查不同性别、年龄段、设备和采集协议上的亚组表现及概率校准。
 
-项目还附带 `CLINICAL_VALIDATION_CHECKLIST.md` 和 `MODEL_CARD_TEMPLATE.md`，用于记录临床前验证和模型适用边界。
+已发布模型的实际情况见 [MODEL_CARDS.md](MODEL_CARDS.md)。`CLINICAL_VALIDATION_CHECKLIST.md`
+和 `MODEL_CARD_TEMPLATE.md` 仍作为未来实验的清单与模板，不表示临床验证已完成。
 
 ## 8. 常见风险
 

@@ -15,6 +15,10 @@
 - 训练：最多 20 epoch，early-stopping patience 5；实际运行 10 epoch，最佳 epoch 为 5
 - 隐私：CT 仅在 Hugging Face 以唯读 volume 挂载；未导出 manifest、影像路径、患者级预测或患者标识
 
+计数说明：这里的 `study` 是适配器中的 volume 标识，包含同一扫描的不同重建，并非独立扫描数。
+指标与 `split_summary.csv` 的各标签阳性数均按 volume 统计；bootstrap 才以患者为抽样单位。
+测试集是官方验证集内划出的内部留出集，不是外部医院测试。实际模型卡见 [MODEL_CARDS.md](MODEL_CARDS.md)。
+
 两次早期启动检查分别运行 90 秒和 47 秒后暴露并修复了只读源码挂载及 MedicalNet 下载依赖问题。三次 T4 总运行时间约 2,210 秒，按 US$0.60/小时估算约 US$0.37；排队和已取消的 L4 未计入 GPU 运行成本。
 
 ## 聚合指标

@@ -7,3 +7,27 @@ runs/
 cloud_outputs/
 data/manifest.csv
 *.pt
+
+# Credentials, medical data and personal documents must never be published.
+.env
+.env.*
+!.env.example
+token
+stored_tokens
+hf_home/
+hf_jobs_client/
+*.pem
+*.key
+*.dcm
+*.nii
+*.nii.gz
+*.npz
+*.pth
+*.ckpt
+*.pt.part*
+*.docx
+*.pdf
+datasets/
+**/manifest.csv
+**/*_predictions.csv
+**/patient_metadata.csv
