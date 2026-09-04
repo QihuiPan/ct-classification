@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import time
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,7 @@ def run_epoch(
     scaler: torch.cuda.amp.GradScaler | None = None,
     mixed_precision: bool = False,
     accumulation_steps: int = 1,
+    deadline: float | None = None,
 ) -> dict[str, Any]:
     training = optimizer is not None
     model.train(training)
@@ -53,6 +55,8 @@ def run_epoch(
 
     progress = tqdm(loader, leave=False, desc="train" if training else "evaluate")
     for step, batch in enumerate(progress):
+        if deadline is not None and time.monotonic() >= deadline:
+            raise TimeoutError("Training soft time limit reached")
         images = batch["image"].to(device, non_blocking=True)
         targets = batch["target"].to(device, non_blocking=True)
         with torch.set_grad_enabled(training):
@@ -286,26 +290,26 @@ def train_model(
     best_epoch = 0
     patience = 0
     checkpoint_path = output / "best.pt"
+    max_seconds = float(config["training"].get("max_seconds", 0))
+    deadline = time.monotonic() + max_seconds if max_seconds > 0 else None
+    stop_reason = "epochs_completed"
     for epoch in range(1, int(config["training"]["epochs"]) + 1):
         if freeze_epochs > 0 and epoch == freeze_epochs + 1:
             unfreeze_all(model)
-        train_result = run_epoch(
-            model,
-            train_loader,
-            criterion,
-            device,
-            optimizer=optimizer,
-            scaler=scaler,
-            mixed_precision=mixed,
-            accumulation_steps=accumulation,
-        )
-        val_result = run_epoch(
-            model,
-            val_loader,
-            criterion,
-            device,
-            mixed_precision=mixed,
-        )
+        try:
+            train_result = run_epoch(
+                model, train_loader, criterion, device, optimizer=optimizer, scaler=scaler,
+                mixed_precision=mixed, accumulation_steps=accumulation, deadline=deadline,
+            )
+            val_result = run_epoch(
+                model, val_loader, criterion, device, mixed_precision=mixed, deadline=deadline,
+            )
+        except TimeoutError:
+            if best_epoch == 0:
+                raise RuntimeError("Soft limit reached before any complete epoch; no trained result claimed")
+            stop_reason = "training_time_limit"
+            print("Training time limit reached; evaluating the last best complete epoch.", flush=True)
+            break
         score, val_metrics = _selection_score(val_result, config)
         learning_rate = float(optimizer.param_groups[0]["lr"])
         row = {
@@ -345,6 +349,7 @@ def train_model(
             else:
                 scheduler.step()
         if patience >= int(config["training"].get("early_stopping_patience", 12)):
+            stop_reason = "early_stopping"
             print(f"Early stopping at epoch {epoch}; best epoch was {best_epoch}.")
             break
 
@@ -375,6 +380,8 @@ def train_model(
         model, test_loader, device, config, output, "test", temperature, thresholds
     )
     summary = {
+        "epochs_completed": len(history),
+        "stop_reason": stop_reason,
         "best_epoch": best_epoch,
         "selection_score": best_score,
         "temperature": temperature,

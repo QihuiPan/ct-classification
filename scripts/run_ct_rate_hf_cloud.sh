@@ -14,7 +14,10 @@ python -m pip install --no-cache-dir \
   'tqdm>=4.66,<5'
 
 python -m pip install --no-cache-dir --no-deps 'monai==1.5.1'
-export PYTHONPATH="/workspace/src${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="/workspace:/workspace/src${PYTHONPATH:+:$PYTHONPATH}"
+if [[ "${CT_RATE_EXPANDED_CLOUD:-0}" == "1" ]]; then
+  exec python /workspace/scripts/run_ct_rate_hf_expanded.py
+fi
 python /workspace/scripts/run_ct_rate_hf_cloud.py \
   --dataset-root /mnt/ct-rate \
   --output-root /outputs \

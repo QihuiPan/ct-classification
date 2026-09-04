@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -86,6 +87,9 @@ def preprocess_ct(
                 "preprocessed_shape_czyx": list(tensor.shape),
             }
 
+    minimum = float(data_config.get("cache_min_free_gb", 0)) * 1024**3
+    if minimum > 0 and cache_path is not None and shutil.disk_usage(cache_path.parent).free < minimum:
+        raise RuntimeError("Insufficient ephemeral disk headroom; stopping before reading another CT")
     image, metadata = load_ct_image(path, series_id=series_id)
     image = resample_ct(image, data_config["target_spacing"])
     import SimpleITK as sitk
@@ -110,6 +114,8 @@ def preprocess_ct(
         }
     )
     if cache_path is not None:
+        if minimum > 0 and shutil.disk_usage(cache_path.parent).free < minimum + stacked.nbytes:
+            raise RuntimeError("Insufficient ephemeral disk headroom for the preprocessing cache")
         temporary = cache_path.with_suffix(f".{os.getpid()}.tmp.npz")
         np.savez_compressed(temporary, image=stacked)
         os.replace(temporary, cache_path)
