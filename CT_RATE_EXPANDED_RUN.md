@@ -1,7 +1,22 @@
 # CT-RATE expanded cloud experiment
 
-Preparation date: 2026-09-04. **Prepared, not yet trained.**
+Status as of 2026-09-04 09:07 UTC: **Submitted; waiting for GPU allocation.**
 This is a larger sampled experiment, not full 21.3TB training and not clinical validation.
+
+## Submitted job
+
+- [Hugging Face job `6a9a8942259f8e97255dda65`](https://huggingface.co/jobs/pitaya29/6a9a8942259f8e97255dda65)
+  was submitted on 2026-09-04 at 09:02:58 UTC using `t4-medium` (16GB T4).
+- The submission set a 43,200-second (12-hour) platform timeout. The verified compute
+  price was USD 0.60/hour, reserving at most USD 7.20 compute within a USD 10 total cap.
+- Source tree: `bfdace5cd00a2a38ba089d1f19df81d9f2437bc6`, published in
+  [GitHub commit `1502add`](https://github.com/QihuiPan/ct-classification/commit/1502add11b4a0257a9e8d2ef0b824447210f50b0).
+  The uploaded source archive records local commit `c8bea0aad95f75d0484bba95891e92f734241966`;
+  both commits were verified to have the same tree.
+- Dataset revision: `deeca4d89e9f978d4d1bccd88a55071ddbb146bb`, read-only cloud mount.
+- This is a single authorized job with no automatic resubmission. At this status check,
+  allocation had not completed: no actual cohort counts, epochs or expanded-run metrics
+  are yet available. The counts below remain targets until verified by the job outputs.
 
 ## Locked protocol
 
